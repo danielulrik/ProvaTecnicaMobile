@@ -2,7 +2,7 @@ package com.ulrik.provatecnicamobile.model;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class Todo extends BaseModel {
+public class Todo {
 
     private int userId;
     private int id;

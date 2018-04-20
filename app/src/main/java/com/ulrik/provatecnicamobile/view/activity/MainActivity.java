@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.ulrik.provatecnicamobile.R;
+import com.ulrik.provatecnicamobile.model.Post;
 import com.ulrik.provatecnicamobile.view.fragments.PostsFragment;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements PostsFragment.OnPostListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -44,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
         // adapter.addFragment(new TwoFragment(), "TWO");
         // adapter.addFragment(new ThreeFragment(), "THREE");
         viewPager.setAdapter(adapter);
+    }
+
+    @Override
+    public void onPostClicked(Post item) {
+
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {

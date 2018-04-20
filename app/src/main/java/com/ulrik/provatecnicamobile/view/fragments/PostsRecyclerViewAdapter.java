@@ -39,7 +39,7 @@ public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<PostsRecycler
         holder.mItem = posts.get(position);
         holder.textViewTitle.setText(posts.get(position).getTitle());
         holder.textViewBody.setText(posts.get(position).getBody());
-        holder.textViewSubtitle.setText(String.format(Locale.getDefault(), "User id - %d", posts.get(position).getUserId()));
+        holder.textViewSubtitle.setText(String.format(Locale.getDefault(), "User id: %d", posts.get(position).getUserId()));
 
         holder.mView.setOnClickListener(v -> {
             if (null != mListener) {

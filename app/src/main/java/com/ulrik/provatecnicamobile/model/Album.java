@@ -2,7 +2,7 @@ package com.ulrik.provatecnicamobile.model;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class Album extends BaseModel {
+public class Album {
 
     private int userId;
     private int id;

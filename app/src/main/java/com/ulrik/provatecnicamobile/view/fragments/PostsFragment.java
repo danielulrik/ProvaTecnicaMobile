@@ -19,6 +19,7 @@ import com.ulrik.provatecnicamobile.viewmodel.PostsViewModel;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -50,30 +51,31 @@ public class PostsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_post_list, container, false);
+        ButterKnife.bind(this, view);
         postsViewModel = new PostsViewModel();
+        loadPosts();
         return view;
     }
 
     private void loadPosts() {
-        if (view instanceof RecyclerView) {
-            disposable = postsViewModel.getPosts().subscribeWith(new DisposableObserver<List<Post>>() {
-                @Override
-                public void onNext(List<Post> posts) {
-                    Context context = view.getContext();
-                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                    recyclerView.setAdapter(new PostsRecyclerViewAdapter(posts, mListener));
-                    progressBar.setVisibility(View.GONE);
-                }
+        disposable = postsViewModel.getPosts().subscribeWith(new DisposableObserver<List<Post>>() {
+            @Override
+            public void onNext(List<Post> posts) {
+                Context context = view.getContext();
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                recyclerView.setAdapter(new PostsRecyclerViewAdapter(posts, mListener));
+                progressBar.setVisibility(View.GONE);
+            }
 
-                @Override
-                public void onError(Throwable e) {
-                }
+            @Override
+            public void onError(Throwable e) {
+                e.printStackTrace();
+            }
 
-                @Override
-                public void onComplete() {
-                }
-            });
-        }
+            @Override
+            public void onComplete() {
+            }
+        });
     }
 
     @Override
