@@ -5,19 +5,24 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ulrik.provatecnicamobile.R;
 import com.ulrik.provatecnicamobile.model.Post;
 
 import java.util.List;
+import java.util.Locale;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<PostsRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Post> mValues;
+    private final List<Post> posts;
     private final PostsFragment.OnPostListener mListener;
 
     public PostsRecyclerViewAdapter(List<Post> items, PostsFragment.OnPostListener listener) {
-        mValues = items;
+        posts = items;
         mListener = listener;
     }
 
@@ -31,31 +36,37 @@ public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<PostsRecycler
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        // holder.mIdView.setText(mValues.get(position).id);
-        // holder.mContentView.setText(mValues.get(position).content);
+        holder.mItem = posts.get(position);
+        holder.textViewTitle.setText(posts.get(position).getTitle());
+        holder.textViewBody.setText(posts.get(position).getBody());
+        holder.textViewSubtitle.setText(String.format(Locale.getDefault(), "User id - %d", posts.get(position).getUserId()));
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // mListener.onListFragmentInteraction(holder.mItem);
-                }
+        holder.mView.setOnClickListener(v -> {
+            if (null != mListener) {
+                // mListener.onListFragmentInteraction(holder.mItem);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return posts.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
+        @BindView(R.id.textViewTitle)
+        TextView textViewTitle;
+        @BindView(R.id.textViewBody)
+        TextView textViewBody;
+        @BindView(R.id.textViewSubtitle)
+        TextView textViewSubtitle;
+
+        final View mView;
         public Post mItem;
 
         public ViewHolder(View view) {
             super(view);
+            ButterKnife.bind(this, view);
             mView = view;
         }
     }

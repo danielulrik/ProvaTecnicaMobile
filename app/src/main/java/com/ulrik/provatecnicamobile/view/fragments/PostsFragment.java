@@ -1,5 +1,6 @@
 package com.ulrik.provatecnicamobile.view.fragments;
 
+import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,37 +10,71 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.ulrik.provatecnicamobile.R;
 import com.ulrik.provatecnicamobile.model.Post;
+import com.ulrik.provatecnicamobile.viewmodel.PostsViewModel;
+
+import java.util.List;
+
+import butterknife.BindView;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.observers.DisposableObserver;
 
 public class PostsFragment extends Fragment {
 
     private OnPostListener mListener;
+    private PostsViewModel postsViewModel;
+    private View view;
+    private Disposable disposable;
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
 
     public PostsFragment() {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public void onResume() {
+        super.onResume();
+        if (postsViewModel != null) {
+            loadPosts();
+        }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_post_list, container, false);
-
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new PostsRecyclerViewAdapter(null, mListener));
-        }
+        view = inflater.inflate(R.layout.fragment_post_list, container, false);
+        postsViewModel = new PostsViewModel();
         return view;
     }
 
+    private void loadPosts() {
+        if (view instanceof RecyclerView) {
+            disposable = postsViewModel.getPosts().subscribeWith(new DisposableObserver<List<Post>>() {
+                @Override
+                public void onNext(List<Post> posts) {
+                    Context context = view.getContext();
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                    recyclerView.setAdapter(new PostsRecyclerViewAdapter(posts, mListener));
+                    progressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                }
+
+                @Override
+                public void onComplete() {
+                }
+            });
+        }
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -55,9 +90,13 @@ public class PostsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
+        }
     }
 
     public interface OnPostListener {
         void onPostClicked(Post item);
     }
+
 }
