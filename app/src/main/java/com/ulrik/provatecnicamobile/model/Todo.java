@@ -1,16 +1,14 @@
 package com.ulrik.provatecnicamobile.model;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
-public class Todo {
+public class Todo implements Resource{
 
     private int userId;
     private int id;
     private String title;
     private boolean completed;
 
-    public int getUserId() {
-        return userId;
+    public String getUser() {
+        return "";
     }
 
     public int getId() {
@@ -21,7 +19,8 @@ public class Todo {
         return title;
     }
 
-    public boolean isCompleted() {
-        return completed;
+    public String getStatus() {
+        return completed ? "Finalizada" : "Em andamento";
     }
+
 }

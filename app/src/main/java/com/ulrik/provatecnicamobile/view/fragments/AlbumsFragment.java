@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.ulrik.provatecnicamobile.model.Post;
-import com.ulrik.provatecnicamobile.view.adapter.PostsRecyclerViewAdapter;
+import com.ulrik.provatecnicamobile.model.Album;
+import com.ulrik.provatecnicamobile.view.adapter.AlbumsRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -17,27 +17,26 @@ import io.reactivex.observers.DisposableObserver;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PostsFragment extends ResourceFragment {
+public class AlbumsFragment extends ResourceFragment {
 
-    private OnPostListener mListener;
+    private OnAlbumListener mListener;
     private Disposable disposable;
 
-
-    public PostsFragment() {
+    public AlbumsFragment() {
         // Required empty public constructor
     }
 
-    public interface OnPostListener {
-        void onPostClicked(Post item);
+    public interface OnAlbumListener {
+        void onAlbumClicked(Album item);
     }
 
     public void load() {
-        disposable = resourcesViewModel.getPosts().subscribeWith(new DisposableObserver<List<Post>>() {
+        disposable = resourcesViewModel.getAlbums().subscribeWith(new DisposableObserver<List<Album>>() {
             @Override
-            public void onNext(List<Post> posts) {
+            public void onNext(List<Album> albums) {
                 Context context = getContext();
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                recyclerView.setAdapter(new PostsRecyclerViewAdapter(posts, mListener));
+                recyclerView.setAdapter(new AlbumsRecyclerViewAdapter(albums, mListener));
                 progressBar.setVisibility(View.GONE);
             }
 
@@ -54,10 +53,10 @@ public class PostsFragment extends ResourceFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnPostListener) {
-            mListener = (OnPostListener) context;
+        if (context instanceof OnAlbumListener) {
+            mListener = (OnAlbumListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnPostListener");
+            throw new RuntimeException(context.toString() + " must implement OnAlbumListener");
         }
     }
 

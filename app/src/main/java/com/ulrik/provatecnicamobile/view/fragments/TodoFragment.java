@@ -6,8 +6,10 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.ulrik.provatecnicamobile.model.Post;
-import com.ulrik.provatecnicamobile.view.adapter.PostsRecyclerViewAdapter;
+import com.ulrik.provatecnicamobile.model.Album;
+import com.ulrik.provatecnicamobile.model.Todo;
+import com.ulrik.provatecnicamobile.view.adapter.AlbumsRecyclerViewAdapter;
+import com.ulrik.provatecnicamobile.view.adapter.TodoRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -17,27 +19,26 @@ import io.reactivex.observers.DisposableObserver;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PostsFragment extends ResourceFragment {
+public class TodoFragment extends ResourceFragment {
 
-    private OnPostListener mListener;
+    private OnTodoListener mListener;
     private Disposable disposable;
 
-
-    public PostsFragment() {
+    public TodoFragment() {
         // Required empty public constructor
     }
 
-    public interface OnPostListener {
-        void onPostClicked(Post item);
+    public interface OnTodoListener {
+        void onTodoClicked(Todo item);
     }
 
     public void load() {
-        disposable = resourcesViewModel.getPosts().subscribeWith(new DisposableObserver<List<Post>>() {
+        disposable = resourcesViewModel.getTodoList().subscribeWith(new DisposableObserver<List<Todo>>() {
             @Override
-            public void onNext(List<Post> posts) {
+            public void onNext(List<Todo> todoList) {
                 Context context = getContext();
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                recyclerView.setAdapter(new PostsRecyclerViewAdapter(posts, mListener));
+                recyclerView.setAdapter(new TodoRecyclerViewAdapter(todoList, mListener));
                 progressBar.setVisibility(View.GONE);
             }
 
@@ -54,10 +55,10 @@ public class PostsFragment extends ResourceFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnPostListener) {
-            mListener = (OnPostListener) context;
+        if (context instanceof OnTodoListener) {
+            mListener = (OnTodoListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnPostListener");
+            throw new RuntimeException(context.toString() + " must implement OnTodoListener");
         }
     }
 

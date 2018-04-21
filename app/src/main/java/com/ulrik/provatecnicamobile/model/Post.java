@@ -1,8 +1,6 @@
 package com.ulrik.provatecnicamobile.model;
 
-import com.raizlabs.android.dbflow.structure.BaseModel;
-
-public class Post {
+public class Post implements Resource{
 
     private int userId;
     private int id;
@@ -12,8 +10,8 @@ public class Post {
     public Post() {
     }
 
-    public int getUserId() {
-        return userId;
+    public String getUser() {
+        return "";
     }
 
     public int getId() {

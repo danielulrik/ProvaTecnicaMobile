@@ -2,15 +2,11 @@ package com.ulrik.provatecnicamobile.model;
 
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
-public class Album {
+public class Album implements Resource {
 
     private int userId;
     private int id;
     private String title;
-
-    public int getUserId() {
-        return userId;
-    }
 
     public int getId() {
         return id;
@@ -18,5 +14,9 @@ public class Album {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getUser() {
+        return "";
     }
 }
