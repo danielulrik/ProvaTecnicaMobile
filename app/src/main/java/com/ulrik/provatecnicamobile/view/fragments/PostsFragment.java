@@ -1,6 +1,5 @@
 package com.ulrik.provatecnicamobile.view.fragments;
 
-import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,9 +19,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 
 public class PostsFragment extends Fragment {
