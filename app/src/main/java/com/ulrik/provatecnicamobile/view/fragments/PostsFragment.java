@@ -26,7 +26,6 @@ public class PostsFragment extends ResourceFragment {
 
 
     public PostsFragment() {
-        // Required empty public constructor
     }
 
     public interface OnPostListener {

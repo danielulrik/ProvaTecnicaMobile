@@ -8,64 +8,56 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ulrik.provatecnicamobile.R;
+import com.ulrik.provatecnicamobile.model.Comment;
 import com.ulrik.provatecnicamobile.model.Post;
 import com.ulrik.provatecnicamobile.view.fragments.PostsFragment;
 
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<PostsRecyclerViewAdapter.ViewHolder> {
+public class CommentsRecyclerViewAdapter extends RecyclerView.Adapter<CommentsRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Post> posts;
-    private final PostsFragment.OnPostListener mListener;
+    private final List<Comment> comments;
 
-    public PostsRecyclerViewAdapter(List<Post> items, PostsFragment.OnPostListener listener) {
-        posts = items;
-        mListener = listener;
+    public CommentsRecyclerViewAdapter(List<Comment> items) {
+        comments = items;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.post_adapter, parent, false);
+                .inflate(R.layout.comment_adapter, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.mItem = posts.get(position);
-        holder.textViewUser.setText(posts.get(position).getUser());
-        holder.textViewTitle.setText(posts.get(position).getTitle());
-        holder.textViewBody.setText(posts.get(position).getBody());
-
-        holder.mView.setOnClickListener(v -> {
-            if (null != mListener) {
-                mListener.onPostClicked(holder.mItem);
-            }
-        });
+        holder.mItem = comments.get(position);
+        holder.textViewName.setText(comments.get(position).getName());
+        holder.textViewEmail.setText(comments.get(position).getEmail());
+        holder.textViewBody.setText(comments.get(position).getBody());
     }
 
     @Override
     public int getItemCount() {
-        return posts.size();
+        return comments.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.textViewUser)
-        TextView textViewUser;
-        @BindView(R.id.textViewTitle)
-        TextView textViewTitle;
+        @BindView(R.id.textViewName)
+        TextView textViewName;
+        @BindView(R.id.textViewEmail)
+        TextView textViewEmail;
         @BindView(R.id.textViewBody)
         TextView textViewBody;
 
         final View mView;
-        Post mItem;
+        public Comment mItem;
 
-        ViewHolder(View view) {
+        public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             mView = view;

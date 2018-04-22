@@ -11,6 +11,7 @@ import com.ulrik.provatecnicamobile.cache.Cache;
 import com.ulrik.provatecnicamobile.database.AppDatabase;
 import com.ulrik.provatecnicamobile.model.Album;
 import com.ulrik.provatecnicamobile.model.Comment;
+import com.ulrik.provatecnicamobile.model.Comment_Table;
 import com.ulrik.provatecnicamobile.model.Photo;
 import com.ulrik.provatecnicamobile.model.Post;
 import com.ulrik.provatecnicamobile.model.Todo;
@@ -58,6 +59,11 @@ public class ResourceRepository {
 
     public Single<List<Todo>> getTodoList() {
         return RXSQLite.rx(SQLite.select().from(Todo.class)).queryList();
+    }
+
+    public Single<List<Comment>> getComments(Post post) {
+        return RXSQLite.rx(SQLite.select().from(Comment.class)
+                .where(Comment_Table.postId.eq(post.getId()))).queryList();
     }
 
     private void putAll(List<User> users, List<Post> posts, List<Comment> comments,

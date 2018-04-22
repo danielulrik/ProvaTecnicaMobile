@@ -21,11 +21,9 @@ import butterknife.ButterKnife;
 public class TodoRecyclerViewAdapter extends RecyclerView.Adapter<TodoRecyclerViewAdapter.ViewHolder> {
 
     private final List<Todo> todoList;
-    private final TodoFragment.OnTodoListener mListener;
 
-    public TodoRecyclerViewAdapter(List<Todo> items, TodoFragment.OnTodoListener listener) {
+    public TodoRecyclerViewAdapter(List<Todo> items) {
         todoList = items;
-        mListener = listener;
     }
 
     @NonNull
@@ -42,12 +40,6 @@ public class TodoRecyclerViewAdapter extends RecyclerView.Adapter<TodoRecyclerVi
         holder.textViewUser.setText(todoList.get(position).getUser());
         holder.textViewTitle.setText(todoList.get(position).getTitle());
         holder.textViewStatus.setText(todoList.get(position).getStatus());
-
-        holder.mView.setOnClickListener(v -> {
-            if (null != mListener) {
-                // mListener.onListFragmentInteraction(holder.mItem);
-            }
-        });
     }
 
     @Override

@@ -6,16 +6,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 
-import com.ulrik.provatecnicamobile.model.Album;
 import com.ulrik.provatecnicamobile.model.Todo;
-import com.ulrik.provatecnicamobile.view.adapter.AlbumsRecyclerViewAdapter;
 import com.ulrik.provatecnicamobile.view.adapter.TodoRecyclerViewAdapter;
 
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.observers.DisposableObserver;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,14 +31,11 @@ public class TodoFragment extends ResourceFragment {
     }
 
     public void load() {
-        disposable = resourcesViewModel.getTodoList().subscribe(new Consumer<List<Todo>>() {
-            @Override
-            public void accept(List<Todo> todos) throws Exception {
-                Context context = getContext();
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                recyclerView.setAdapter(new TodoRecyclerViewAdapter(todos, mListener));
-                progressBar.setVisibility(View.GONE);
-            }
+        disposable = resourcesViewModel.getTodoList().subscribe(todos -> {
+            Context context = getContext();
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(new TodoRecyclerViewAdapter(todos));
+            progressBar.setVisibility(View.GONE);
         });
     }
 
