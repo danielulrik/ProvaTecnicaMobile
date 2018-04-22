@@ -42,7 +42,7 @@ public class AlbumsRecyclerViewAdapter extends RecyclerView.Adapter<AlbumsRecycl
 
         holder.mView.setOnClickListener(v -> {
             if (null != mListener) {
-                // mListener.onListFragmentInteraction(holder.mItem);
+                mListener.onAlbumClicked(holder.mItem);
             }
         });
     }
@@ -59,9 +59,9 @@ public class AlbumsRecyclerViewAdapter extends RecyclerView.Adapter<AlbumsRecycl
         TextView textViewTitle;
 
         final View mView;
-        public Album mItem;
+        Album mItem;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             mView = view;

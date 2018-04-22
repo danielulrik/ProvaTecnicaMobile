@@ -71,7 +71,9 @@ public class MainActivity extends AppCompatActivity implements PostsFragment.OnP
 
     @Override
     public void onAlbumClicked(Album item) {
-
+        Intent intent = new Intent(this, PhotosActivity.class);
+        intent.putExtra(PhotosActivity.EXTRA_ALBUM, item);
+        startActivity(intent);
     }
 
     @Override

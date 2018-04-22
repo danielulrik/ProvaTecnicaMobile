@@ -48,7 +48,7 @@ public class PostDetailActivity extends AppCompatActivity {
         textViewBody.setText(post.getBody());
 
         ResourcesViewModel resourcesViewModel = new ResourcesViewModel();
-        disposable = resourcesViewModel.getComments(post).subscribe(comments -> {
+        disposable = resourcesViewModel.getComments(post.getId()).subscribe(comments -> {
             recyclerView.setLayoutManager(new LinearLayoutManager(PostDetailActivity.this));
             recyclerView.addItemDecoration(new SimpleDividerItemDecoration(PostDetailActivity.this));
             recyclerView.setAdapter(new CommentsRecyclerViewAdapter(comments));

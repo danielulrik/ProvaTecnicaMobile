@@ -2,6 +2,7 @@ package com.ulrik.provatecnicamobile.viewmodel;
 
 import com.ulrik.provatecnicamobile.model.Album;
 import com.ulrik.provatecnicamobile.model.Comment;
+import com.ulrik.provatecnicamobile.model.Photo;
 import com.ulrik.provatecnicamobile.model.Post;
 import com.ulrik.provatecnicamobile.model.Todo;
 import com.ulrik.provatecnicamobile.repository.ResourceRepository;
@@ -34,8 +35,14 @@ public class ResourcesViewModel {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Single<List<Comment>> getComments(Post post) {
-        return resourceRepository.getComments(post)
+    public Single<List<Comment>> getComments(int postId) {
+        return resourceRepository.getComments(postId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Single<List<Photo>> getPhotos(int albumId) {
+        return resourceRepository.getPhotos(albumId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

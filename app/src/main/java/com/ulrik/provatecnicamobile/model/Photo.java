@@ -16,6 +16,8 @@ public class Photo extends BaseRXModel {
     @Column
     private int albumId;
     @Column
+    private String title;
+    @Column
     private String url;
     @Column
     private String thumbnailUrl;
@@ -53,5 +55,13 @@ public class Photo extends BaseRXModel {
 
     public void setThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
