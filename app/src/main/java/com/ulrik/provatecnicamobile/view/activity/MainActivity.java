@@ -1,10 +1,12 @@
 package com.ulrik.provatecnicamobile.view.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import com.ulrik.provatecnicamobile.R;
@@ -19,7 +21,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements PostsFragment.OnPostListener,
-        AlbumsFragment.OnAlbumListener, TodoFragment.OnTodoListener{
+        AlbumsFragment.OnAlbumListener, TodoFragment.OnTodoListener {
 
     private static final String POSTS_TAG = "PostsFragment";
     private static final String ALBUMS_TAG = "AlbumsFragment";
@@ -27,6 +29,9 @@ public class MainActivity extends AppCompatActivity implements PostsFragment.OnP
 
     @BindView(R.id.bottom_navigation)
     BottomNavigationView bottomNavigationView;
+    private Fragment postsFragment;
+    private Fragment albumsFragment;
+    private Fragment todoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +39,25 @@ public class MainActivity extends AppCompatActivity implements PostsFragment.OnP
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         initListeners();
-        loadFragment(new PostsFragment(), POSTS_TAG);
+
+        postsFragment = new PostsFragment();
+        albumsFragment = new AlbumsFragment();
+        todoFragment = new AlbumsFragment();
+
+        loadFragment(postsFragment, POSTS_TAG);
     }
 
     private void initListeners() {
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_posts:
-                    loadFragment(new PostsFragment(), POSTS_TAG);
+                    loadFragment(postsFragment, POSTS_TAG);
                     return true;
                 case R.id.action_albuns:
-                    loadFragment(new AlbumsFragment(), ALBUMS_TAG);
+                    loadFragment(albumsFragment, ALBUMS_TAG);
                     return true;
                 case R.id.action_todo:
-                    loadFragment(new TodoFragment(), TODO_TAG);
+                    loadFragment(todoFragment, TODO_TAG);
                     return true;
             }
             return false;
@@ -57,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements PostsFragment.OnP
     private void loadFragment(Fragment fragment, String tag) {
         final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.container, fragment);
-        ft.addToBackStack(null);
         ft.commit();
     }
 
@@ -83,6 +92,10 @@ public class MainActivity extends AppCompatActivity implements PostsFragment.OnP
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();//todo impl
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.text_atencao)
+                .setMessage(R.string.text_deseja_sair)
+                .setPositiveButton(R.string.text_sim, (dialog, which) -> finish())
+                .setNegativeButton(R.string.text_nao, null).show();
     }
 }
