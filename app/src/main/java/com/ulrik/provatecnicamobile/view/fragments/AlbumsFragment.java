@@ -12,6 +12,7 @@ import com.ulrik.provatecnicamobile.view.adapter.AlbumsRecyclerViewAdapter;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -31,21 +32,13 @@ public class AlbumsFragment extends ResourceFragment {
     }
 
     public void load() {
-        disposable = resourcesViewModel.getAlbums().subscribeWith(new DisposableObserver<List<Album>>() {
+        disposable = resourcesViewModel.getAlbums().subscribe(new Consumer<List<Album>>() {
             @Override
-            public void onNext(List<Album> albums) {
+            public void accept(List<Album> albums) throws Exception {
                 Context context = getContext();
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
                 recyclerView.setAdapter(new AlbumsRecyclerViewAdapter(albums, mListener));
                 progressBar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-
-            @Override
-            public void onComplete() {
             }
         });
     }

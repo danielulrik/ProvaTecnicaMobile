@@ -12,7 +12,9 @@ import com.ulrik.provatecnicamobile.view.adapter.PostsRecyclerViewAdapter;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
+import io.reactivex.observers.DisposableSingleObserver;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,21 +34,13 @@ public class PostsFragment extends ResourceFragment {
     }
 
     public void load() {
-        disposable = resourcesViewModel.getPosts().subscribeWith(new DisposableObserver<List<Post>>() {
+        disposable = resourcesViewModel.getPosts().subscribe(new Consumer<List<Post>>() {
             @Override
-            public void onNext(List<Post> posts) {
+            public void accept(List<Post> posts) throws Exception {
                 Context context = getContext();
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
                 recyclerView.setAdapter(new PostsRecyclerViewAdapter(posts, mListener));
                 progressBar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-
-            @Override
-            public void onComplete() {
             }
         });
     }

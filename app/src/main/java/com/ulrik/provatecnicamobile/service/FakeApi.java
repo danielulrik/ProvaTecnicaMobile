@@ -10,6 +10,7 @@ import com.ulrik.provatecnicamobile.model.User;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -18,21 +19,21 @@ public interface FakeApi {
     String URL_BASE = "https://jsonplaceholder.typicode.com/";
 
     @GET("users")
-    Observable<List<User>> getUsers();
+    Single<List<User>> getUsers();
 
     @GET("posts")
-    Observable<List<Post>> getPosts();
+    Single<List<Post>> getPosts();
 
     @GET("comments")
-    Observable<List<Comment>> getComments();
+    Single<List<Comment>> getComments();
 
     @GET("todos")
-    Observable<List<Todo>> getTodoList();
+    Single<List<Todo>> getTodoList();
 
     @GET("albums")
-    Observable<List<Album>> getAlbums();
+    Single<List<Album>> getAlbums();
 
     @GET("photos")
-    Observable<List<Photo>> getPhotos();
+    Single<List<Photo>> getPhotos();
 
 }

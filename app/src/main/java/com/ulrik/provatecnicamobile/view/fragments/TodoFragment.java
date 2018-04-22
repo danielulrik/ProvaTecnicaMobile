@@ -14,6 +14,7 @@ import com.ulrik.provatecnicamobile.view.adapter.TodoRecyclerViewAdapter;
 import java.util.List;
 
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -33,21 +34,13 @@ public class TodoFragment extends ResourceFragment {
     }
 
     public void load() {
-        disposable = resourcesViewModel.getTodoList().subscribeWith(new DisposableObserver<List<Todo>>() {
+        disposable = resourcesViewModel.getTodoList().subscribe(new Consumer<List<Todo>>() {
             @Override
-            public void onNext(List<Todo> todoList) {
+            public void accept(List<Todo> todos) throws Exception {
                 Context context = getContext();
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
-                recyclerView.setAdapter(new TodoRecyclerViewAdapter(todoList, mListener));
+                recyclerView.setAdapter(new TodoRecyclerViewAdapter(todos, mListener));
                 progressBar.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-            }
-
-            @Override
-            public void onComplete() {
             }
         });
     }

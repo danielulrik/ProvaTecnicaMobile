@@ -33,14 +33,6 @@ public abstract class ResourceFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        if (resourcesViewModel != null) {
-            load();
-        }
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
