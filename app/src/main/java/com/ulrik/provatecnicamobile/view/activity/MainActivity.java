@@ -74,4 +74,9 @@ public class MainActivity extends AppCompatActivity implements PostsFragment.OnP
     public void onTodoClicked(Todo item) {
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();//todo impl
+    }
 }
