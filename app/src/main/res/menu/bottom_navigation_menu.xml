@@ -5,18 +5,18 @@
         android:id="@+id/action_posts"
         android:enabled="true"
         android:icon="@android:drawable/ic_delete"
-        android:title="Postagens"
+        android:title="@string/postagens"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_albuns"
         android:enabled="true"
         android:icon="@android:drawable/ic_delete"
-        android:title="Albuns"
+        android:title="@string/albuns"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_todo"
         android:enabled="true"
         android:icon="@android:drawable/ic_delete"
-        android:title="To-do"
+        android:title="@string/to_do"
         app:showAsAction="ifRoom" />
 </menu>

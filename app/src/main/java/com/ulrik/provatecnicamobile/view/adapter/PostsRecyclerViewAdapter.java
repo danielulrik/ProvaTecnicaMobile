@@ -38,9 +38,9 @@ public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<PostsRecycler
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mItem = posts.get(position);
+        holder.textViewUser.setText(posts.get(position).getUser());
         holder.textViewTitle.setText(posts.get(position).getTitle());
         holder.textViewBody.setText(posts.get(position).getBody());
-        holder.textViewSubtitle.setText(posts.get(position).getUser());
 
         holder.mView.setOnClickListener(v -> {
             if (null != mListener) {
@@ -55,12 +55,12 @@ public class PostsRecyclerViewAdapter extends RecyclerView.Adapter<PostsRecycler
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.textViewUser)
+        TextView textViewUser;
         @BindView(R.id.textViewTitle)
         TextView textViewTitle;
         @BindView(R.id.textViewBody)
         TextView textViewBody;
-        @BindView(R.id.textViewSubtitle)
-        TextView textViewSubtitle;
 
         final View mView;
         public Post mItem;

@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import com.ulrik.provatecnicamobile.R;
 import com.ulrik.provatecnicamobile.model.Post;
+import com.ulrik.provatecnicamobile.view.SimpleDividerItemDecoration;
 import com.ulrik.provatecnicamobile.viewmodel.ResourcesViewModel;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public abstract class ResourceFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, view);
         resourcesViewModel = new ResourcesViewModel();
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(view.getContext()));
         load();
         return view;
     }

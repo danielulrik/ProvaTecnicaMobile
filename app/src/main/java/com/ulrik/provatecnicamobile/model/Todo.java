@@ -5,6 +5,7 @@ import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 import com.raizlabs.android.dbflow.rx2.structure.BaseRXModel;
 import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.ulrik.provatecnicamobile.cache.Cache;
 import com.ulrik.provatecnicamobile.database.AppDatabase;
 
 @Table(database = AppDatabase.class)
@@ -52,7 +53,7 @@ public class Todo extends BaseRXModel {
     }
 
     public String getUser() {
-        return "";
+        return Cache.getUser(userId).getName();
     }
 
     public String getStatus() {

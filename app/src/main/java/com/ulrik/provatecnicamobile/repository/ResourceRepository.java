@@ -7,6 +7,7 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
 import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction;
+import com.ulrik.provatecnicamobile.cache.Cache;
 import com.ulrik.provatecnicamobile.database.AppDatabase;
 import com.ulrik.provatecnicamobile.model.Album;
 import com.ulrik.provatecnicamobile.model.Comment;
@@ -29,6 +30,9 @@ public class ResourceRepository {
 
     private Single<Boolean> syncDb() {
         if (SQLite.select().from(Post.class).count() > 0) {
+            if (Cache.getUsers().size() == 0) {
+                Cache.setUsers(SQLite.select().from(User.class).queryList());
+            }
             return Single.just(true);
         }
         return Single.zip(ServiceFactory.getApi().getUsers(),
@@ -36,8 +40,9 @@ public class ResourceRepository {
                 ServiceFactory.getApi().getComments(),
                 ServiceFactory.getApi().getTodoList(),
                 ServiceFactory.getApi().getAlbums(),
-                ServiceFactory.getApi().getPhotos(), (users, posts, comments, todos, albums, photos) -> {
-                    putAll(users, posts, comments, todos, albums, photos);
+                ServiceFactory.getApi().getPhotos(), (users, posts, comments, todoList, albums, photos) -> {
+                    Cache.setUsers(users);
+                    putAll(users, posts, comments, todoList, albums, photos);
                     return true;
                 });
     }
