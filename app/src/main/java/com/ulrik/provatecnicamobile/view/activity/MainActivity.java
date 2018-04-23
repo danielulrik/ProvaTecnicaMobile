@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements PostsFragment.OnP
 
         postsFragment = new PostsFragment();
         albumsFragment = new AlbumsFragment();
-        todoFragment = new AlbumsFragment();
+        todoFragment = new TodoFragment();
 
         loadFragment(postsFragment, POSTS_TAG);
     }

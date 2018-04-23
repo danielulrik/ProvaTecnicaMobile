@@ -14,6 +14,8 @@ import com.ulrik.provatecnicamobile.view.SimpleDividerItemDecoration;
 import com.ulrik.provatecnicamobile.view.adapter.CommentsRecyclerViewAdapter;
 import com.ulrik.provatecnicamobile.viewmodel.ResourcesViewModel;
 
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
@@ -29,6 +31,8 @@ public class PostDetailActivity extends AppCompatActivity {
     TextView textViewTitle;
     @BindView(R.id.textViewBody)
     TextView textViewBody;
+    @BindView(R.id.textViewCommentsCount)
+    TextView textViewCommentsCount;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
     private Disposable disposable;
@@ -49,6 +53,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
         ResourcesViewModel resourcesViewModel = new ResourcesViewModel();
         disposable = resourcesViewModel.getComments(post.getId()).subscribe(comments -> {
+            textViewCommentsCount.setText(String.format(Locale.getDefault(), "%d", comments.size()));
             recyclerView.setLayoutManager(new LinearLayoutManager(PostDetailActivity.this));
             recyclerView.addItemDecoration(new SimpleDividerItemDecoration(PostDetailActivity.this));
             recyclerView.setAdapter(new CommentsRecyclerViewAdapter(comments));

@@ -1,12 +1,10 @@
 package com.ulrik.provatecnicamobile.repository;
 
-import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction;
-import com.raizlabs.android.dbflow.structure.database.transaction.ProcessModelTransaction;
 import com.ulrik.provatecnicamobile.cache.Cache;
 import com.ulrik.provatecnicamobile.database.AppDatabase;
 import com.ulrik.provatecnicamobile.model.Album;
@@ -20,11 +18,21 @@ import com.ulrik.provatecnicamobile.model.User;
 import com.ulrik.provatecnicamobile.service.ServiceFactory;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
+import io.reactivex.Maybe;
+import io.reactivex.MaybeEmitter;
+import io.reactivex.MaybeOnSubscribe;
+import io.reactivex.MaybeSource;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
 import io.reactivex.functions.Function6;
+import io.reactivex.schedulers.Schedulers;
 
 public class ResourceRepository {
 
@@ -37,15 +45,19 @@ public class ResourceRepository {
             }
             return Single.just(true);
         }
-        return Single.zip(ServiceFactory.getApi().getUsers(),
-                ServiceFactory.getApi().getPosts(),
-                ServiceFactory.getApi().getComments(),
-                ServiceFactory.getApi().getTodoList(),
-                ServiceFactory.getApi().getAlbums(),
-                ServiceFactory.getApi().getPhotos(), (users, posts, comments, todoList, albums, photos) -> {
-                    Cache.setUsers(users);
-                    putAll(users, posts, comments, todoList, albums, photos);
-                    return true;
+        return Single.zip(ServiceFactory.getApi().getUsers().subscribeOn(Schedulers.newThread()),
+                ServiceFactory.getApi().getPosts().subscribeOn(Schedulers.newThread()),
+                ServiceFactory.getApi().getComments().subscribeOn(Schedulers.newThread()),
+                ServiceFactory.getApi().getTodoList().subscribeOn(Schedulers.newThread()),
+                ServiceFactory.getApi().getAlbums().subscribeOn(Schedulers.newThread()),
+                ServiceFactory.getApi().getPhotos().subscribeOn(Schedulers.newThread()), new Function6<List<User>, List<Post>, List<Comment>, List<Todo>, List<Album>, List<Photo>, Boolean>() {
+                    @Override
+                    public Boolean apply(List<User> users, List<Post> posts, List<Comment> comments, List<Todo> todos, List<Album> albums, List<Photo> photos) throws Exception {
+                        Cache.setUsers(users);
+                        putAll(users, posts, comments, todos, albums, photos);
+                        // putAllListObservable(users, "users", User.class).concatWith(putAllListObservable(posts, "posts", Post.class));
+                        return true;
+                    }
                 });
     }
 
@@ -73,13 +85,49 @@ public class ResourceRepository {
 
     private void putAll(List<User> users, List<Post> posts, List<Comment> comments,
                         List<Todo> todos, List<Album> albums, List<Photo> photos) {
-        putAllUsers(users);
-        putAllPosts(posts);
-        putAllComments(comments);
-        putAllTodo(todos);
-        putAllAlbums(albums);
-        putAllPhotos(photos);
+
+        putAll(users, User.class);
+        putAll(posts, Post.class);
+        putAll(comments, Comment.class);
+        putAll(todos, Todo.class);
+        putAll(albums, Album.class);
+        putAll(photos, Photo.class);
     }
+
+    private <T> void putAll(List<T> modelList, Class<T> type) {
+        FastStoreModelTransaction
+                .insertBuilder(FlowManager.getModelAdapter(type))
+                .addAll(modelList)
+                .build().execute(database);
+    }
+
+//    private <T> Maybe<String> putAllListObservable(List<T> modelList, String name, Class<T> type) {
+//        return Maybe.create(emitter -> {
+//            FastStoreModelTransaction
+//                    .insertBuilder(FlowManager.getModelAdapter(type))
+//                    .addAll(modelList)
+//                    .build().execute(database);
+//
+//            if (!emitter.isDisposed()) {
+//                emitter.onSuccess(name);
+//            }
+//        });
+//    }
+
+//    private <T> Single<Boolean> putAllListObservable(List<T> modelList, String name, Class<T> type) {
+//        return Single.create(new SingleOnSubscribe<Boolean>() {
+//            @Override
+//            public void subscribe(SingleEmitter<Boolean> emitter) throws Exception {
+//                FastStoreModelTransaction
+//                        .insertBuilder(FlowManager.getModelAdapter(type))
+//                        .addAll(modelList)
+//                        .build().execute(database);
+//                if (!emitter.isDisposed()) {
+//                    emitter.onSuccess(true);
+//                }
+//            }
+//        });
+//    }
 
     private void putAllPosts(List<Post> modelList) {
         FastStoreModelTransaction

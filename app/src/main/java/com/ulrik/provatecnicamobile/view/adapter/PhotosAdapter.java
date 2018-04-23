@@ -14,10 +14,9 @@ import com.bumptech.glide.Glide;
 import com.ulrik.provatecnicamobile.R;
 import com.ulrik.provatecnicamobile.model.Photo;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class PhotosAdapter extends ArrayAdapter {
+public class PhotosAdapter extends ArrayAdapter<Photo> {
     private Context context;
     private int layoutResourceId;
     private List<Photo> data;

@@ -27,7 +27,9 @@
         <activity
             android:name=".view.activity.PhotosActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".view.activity.PhotoActivity"></activity>
+        <activity
+            android:name=".view.activity.PhotoActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
