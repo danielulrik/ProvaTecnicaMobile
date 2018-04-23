@@ -8,8 +8,10 @@ import com.raizlabs.android.dbflow.rx2.structure.BaseRXModel;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 import com.ulrik.provatecnicamobile.database.AppDatabase;
 
+import java.io.Serializable;
+
 @Table(database = AppDatabase.class)
-public class Photo extends BaseRXModel {
+public class Photo extends BaseRXModel implements Serializable {
 
     @PrimaryKey
     private int id;

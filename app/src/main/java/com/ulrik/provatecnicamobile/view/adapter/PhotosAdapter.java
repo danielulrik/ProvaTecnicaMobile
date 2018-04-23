@@ -55,4 +55,8 @@ public class PhotosAdapter extends ArrayAdapter {
         TextView imageTitle;
         ImageView image;
     }
+
+    public List<Photo> getData() {
+        return data;
+    }
 }
