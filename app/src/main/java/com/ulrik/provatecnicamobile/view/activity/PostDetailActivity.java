@@ -36,7 +36,7 @@ public class PostDetailActivity extends AppCompatActivity {
     TextView textViewCommentsCount;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    private Disposable disposable, disposableUser;
+    private Disposable disposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,9 +67,6 @@ public class PostDetailActivity extends AppCompatActivity {
         super.onDestroy();
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
-        }
-        if (disposableUser != null && !disposableUser.isDisposed()) {
-            disposableUser.dispose();
         }
     }
 }

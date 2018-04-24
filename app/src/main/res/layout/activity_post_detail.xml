@@ -56,7 +56,6 @@
             android:src="@drawable/ic_comment" />
 
         <TextView
-            android:text="123"
             android:textSize="12sp"
             android:layout_marginStart="8dp"
             android:textStyle="bold"
