@@ -1,8 +1,10 @@
 package com.ulrik.provatecnicamobile;
 
 import android.app.Application;
-import android.app.NotificationManager;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.ulrik.provatecnicamobile.database.AppDatabase;
@@ -23,14 +25,14 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         FlowManager.init(getApplicationContext());
-        FlowManager.getDatabase(AppDatabase.class).reset();
         preferences = getSharedPreferences("preferences", MODE_PRIVATE);
-        preferences.edit().clear().apply();
         syncDb();
     }
 
     private void syncDb() {
-        if (!preferences.getBoolean("synced", false)) {
+        if (isOnline()) {
+            FlowManager.getDatabase(AppDatabase.class).reset();
+            preferences.edit().clear().apply();
             NotificationUtil.makeProgressNotification(getApplicationContext(), NOTIFICATION_ID);
             compositeDisposable.add(getRepository().syncDb().subscribeOn(Schedulers.io()).subscribe(aBoolean -> {
                 if (aBoolean) {
@@ -67,5 +69,12 @@ public class App extends Application {
 
     public static SharedPreferences getPreferences() {
         return preferences;
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        assert cm != null;
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
     }
 }
