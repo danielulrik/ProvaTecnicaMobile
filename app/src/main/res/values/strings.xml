@@ -9,7 +9,7 @@
     <string name="text_sim">Sim</string>
     <string name="text_nao">Não</string>
 
-    <string name="title_activity_photo_detail">PhotoDetailActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_photo_detail">Foto</string>
+    <string name="text_aguarde">Aguarde...</string>
+    <string name="text_sincronizando">Sincronizando informações...</string>
 </resources>

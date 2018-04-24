@@ -40,6 +40,7 @@ public abstract class ResourceFragment extends Fragment {
         ButterKnife.bind(this, view);
         resourcesViewModel = new ResourcesViewModel();
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(view.getContext()));
+
         load();
         return view;
     }

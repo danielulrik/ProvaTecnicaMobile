@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.ulrik.provatecnicamobile.App;
 import com.ulrik.provatecnicamobile.R;
 import com.ulrik.provatecnicamobile.model.Post;
 import com.ulrik.provatecnicamobile.view.SimpleDividerItemDecoration;
@@ -35,7 +36,7 @@ public class PostDetailActivity extends AppCompatActivity {
     TextView textViewCommentsCount;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
-    private Disposable disposable;
+    private Disposable disposable, disposableUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,9 @@ public class PostDetailActivity extends AppCompatActivity {
         super.onDestroy();
         if (disposable != null && !disposable.isDisposed()) {
             disposable.dispose();
+        }
+        if (disposableUser != null && !disposableUser.isDisposed()) {
+            disposableUser.dispose();
         }
     }
 }

@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 
 import com.ulrik.provatecnicamobile.R;
 import com.ulrik.provatecnicamobile.model.Album;
@@ -16,6 +17,8 @@ import com.ulrik.provatecnicamobile.model.Todo;
 import com.ulrik.provatecnicamobile.view.fragments.AlbumsFragment;
 import com.ulrik.provatecnicamobile.view.fragments.PostsFragment;
 import com.ulrik.provatecnicamobile.view.fragments.TodoFragment;
+
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements PostsFragment.OnP
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        blockUi();
         ButterKnife.bind(this);
         initListeners();
 
@@ -97,5 +101,14 @@ public class MainActivity extends AppCompatActivity implements PostsFragment.OnP
                 .setMessage(R.string.text_deseja_sair)
                 .setPositiveButton(R.string.text_sim, (dialog, which) -> finish())
                 .setNegativeButton(R.string.text_nao, null).show();
+    }
+
+    private void blockUi() {
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    @Override
+    public void unblockUi() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 }
